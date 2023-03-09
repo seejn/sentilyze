@@ -1,0 +1,21 @@
+.iframe-container{
+    position: relative;
+}
+.hover-effect{
+    position: absolute;
+    left: 20px;
+    bottom: -25px;
+}
+.hover-effect:hover .upload_image{
+    opacity: 0.7;
+    transition: 150ms;
+}
+.upload_image{
+    position: absolute;
+    z-index: 1;
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    pointer-events: none;
+    opacity: 0;
+}

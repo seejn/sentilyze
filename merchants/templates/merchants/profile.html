@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+    {% include 'mainapp/head.html' %}
+    <body>
+        {% include 'mainapp/navbar.html' %}
+        <section class="mt-3 h-100 gradient-custom-2" style="padding: 0 2%;">
+            <div class="h-100">
+              <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col col-lg-12">
+                  <div class="card">
+                    <div id="iframe-container" class="rounded-top text-white d-flex flex-row" style="height:400px;">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14128.333618843133!2d85.29252840781251!3d27.714710999999983!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb18fc9a83c0cd%3A0xc0495456663927d4!2sNational%20College%20of%20Computer%20Studies!5e0!3m2!1sen!2snp!4v1678250889250!5m2!1sen!2snp" style="border:0; width: 100%;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        <div class="hover-effect ms-4 d-flex flex-column" style="{% if not request.session.company_pk == company.id %} pointer-events: none; {% endif %}width: 150px;height:150px;">
+                          {% load static %}  
+                          <div class="upload_image d-flex justify-content-center align-items-center">Upload Image</div>
+                          <a href="{% url 'merchants:change_profile_picture' %}" style="height: 100%; width: 100%;">
+                              <img id="profile_picture" src="{% get_media_prefix %}profile_picture/{{ company.id }}/{{ company_profile.company_logo }}"
+                              alt="Image" class="img-fluid img-thumbnail "
+                              style="height: 100%;width: 100%; z-index: 1">
+                          </a>
+                        </div>
+                    </div>
+                  </div>
+                    <div class="p-4 text-black" style="background-color: #f8f9fa;">
+                        <div class="d-flex justify-content-between py-1">
+                            <div>
+                                <h5>{{ company_profile.company_name }}</h5>
+                                <p class="text-secondary">{{ company_profile.company_address }}</p>
+                            </div>
+                            <div class="row">
+                                <div class="mx-2">
+                                    <p class="mb-1 h5 text-center">{{ products.count }}</p>
+                                    <p class="small text-muted mb-0">Posts</p>
+                                </div>
+                                <div class="mx-2">
+                                    <p class="mb-1 h5 text-center">Joined On</p>
+                                    <p class="small text-muted mb-0">{{ company.created_at }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        {% if request.session.company_pk == company.id %}
+                        <div>
+                            <form action="{% url 'merchants:edit_profile' %}" method="POST">
+                                {% csrf_token %}
+                                <button type="submit" class="w-100 btn btn-outline-dark" data-mdb-ripple-color="dark"
+                                style="z-index: 1;">Edit profile</button>
+                            </form>
+                        </div>
+                        {% endif %}
+                    </div>
+                    <div class="card-body p-4 text-black">
+
+                      <div class="mb-5">
+                        <p class="lead fw-normal mb-1">About</p>
+                        <div class="p-4" style="background-color: #f8f9fa;">
+                          <p class="font-italic mb-1">{{ company_profile.company_desc }}</p>
+                        </div>
+                      </div>
+
+                      <div class="mb-5">
+                        <p class="lead fw-normal mb-1">Posts</p>
+                        <div class="row justify-content-center align-items-center" style="background-color: #f8f9fa;padding: 20px 0;">
+
+                          {% include 'product_posts/product_posts.html' %}
+
+                        </div>
+                      </div>
+
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+          {% include 'mainapp/footer.html' %}
+    </body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    {% include 'mainapp/head.html' %}
+    <body>
+        {% include 'mainapp/navbar.html' %}
+        <div class="container card mt-5 text-center p-2">
+            <div class="row justify-content-center container">
+                <div class="content">
+                    <h2 class="">To analyze your user feedback</h2 class="">
+                    <h4 class="">Upload your file here</h4 class="">
+                    <form class="mt-4" action="{% url 'upload_user_reviews:upload_user_reviews' %}" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row align-items-center content">
+                            <div class="col">
+                                <input type="file" name="csv_document" id="document" required>
+                            </div>
+                            <div class="col">
+                                <button id="submit" class="btn btn-primary">Upload</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+    
+            <div class="mt-3 d-flex flex-column">
+                {% block messages %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% if message.tags == 'error' %}
+                                <span class="text-danger mb-3">{{ message }}</span>
+                                <a href="{% url 'upload_user_reviews:show_result' %}" style="pointer-events: none;"  class="text-decoration-none btn btn-secondary p-2 " disabled>Show Result</a>
+                            {% else %}
+                                <span class="text-{{message.tags}} mb-3">{{ message }}</span>
+                                <a href="{% url 'upload_user_reviews:show_result' %}" class="text-decoration-none btn btn-primary p-2" disabled>Show Result</a>
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <a href="{% url 'upload_user_reviews:show_result' %}" style="pointer-events: none;" class="text-decoration-none btn btn-secondary p-2 " disabled>Show Result</a>
+                    {% endif %}
+                {% endblock %}
+            </div>
+        </div>
+        {% include 'mainapp/footer.html' %}
+    </body>
+</html>

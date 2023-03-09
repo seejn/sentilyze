@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+    {% include 'mainapp/head.html' %}
+    <style>
+        section{
+            padding: 0 5%;
+            height: 100vh;
+        }
+        .chart-container{
+            max-height: 80vh;
+            justify-content: center;
+        }
+        .table-container{
+            height: 80vh;
+            overflow: auto;
+        }
+        .table-container::-webkit-scrollbar {
+            width: 5px;
+        }
+        
+        /* Track */
+        .table-container::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 5px grey; 
+            border-radius: 10px;
+        }
+        
+        /* Handle */
+        .table-container::-webkit-scrollbar-thumb {
+            background: red; 
+            border-radius: 10px;
+        }
+        
+        /* Handle on hover */
+        .table-container::-webkit-scrollbar-thumb:hover {
+            background: #b30000; 
+        }
+        .bar_graph_container{
+            height: 80%;
+        }
+    </style>
+<body>
+    {% include 'mainapp/navbar.html' %}
+    {% block messages %}
+        {% if messages %}
+            {% for message in messages %}
+                <span class="text-danger">{{ message }}</span>
+            {% endfor %}
+        {% endif %}
+    {% endblock %}
+
+    {% if goto %}
+        <script>
+            console.log("goto true")
+            window.location.href = "#bar-g"
+        </script>
+    {% endif %}
+    <section>
+        <div class="row my-4 justify-content-center">
+            <h4>Review Result</h4>
+        </div>
+        <hr>
+        <div class="mt-3 row align-items-center">
+            <div class="col-6 chart-container">
+                <canvas id="pie-chart"></canvas>
+            </div>
+            <div class="col-6">
+                <div class="table-container">
+                    <table class="table table-striped mt-3" cellpadding="10">
+                        <tr>
+                            {% for column in context1.columns %}
+                                <th>{{ column}}</th>
+                            {% endfor %}
+                        </tr>
+                        {% for datas in context1.dataset %}
+                        <tr>
+                            {% for data in datas %}
+                                {% if forloop.counter == context1.column_count %}
+                                    {% if data == 1 %}
+                                        <td>Positive</td>
+                                    {% else %}
+                                        <td>Negative</td>
+                                    {% endif %}
+                                {% else %}
+                                    <td>{{ data }}</td>
+                                {% endif %}
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    {% if context2 %}
+    <section class="mt-5">
+        <div class="text-center">
+            <h5 class="my-4 ">{{ context2.field }}-Review Chart</h5>
+        </div>
+        <hr>
+        <div id="bar-g" class="my-3">
+            <form action="" method="POST">
+                {% csrf_token %}
+                <div class="row justify-content-center align-items-center">
+                    {% for field in additional_field %}
+                        <div class="col-2">
+                            {% if field in context2.field %}
+                                <input type="radio" checked name="label" value="{{ field }}"><span> {{ field }}</span>
+                            {% else %}
+                                <input type="radio" name="label" value="{{ field }}"> <span>{{ field }}</span>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <div class="">
+                        <input type="submit" class="btn btn-primary" value="View">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="row justify-content-center bar_graph_container">
+            <canvas id="bar_graph"></canvas>
+        </div>
+    </section>
+        {% endif %}
+    {% include 'mainapp/footer.html' %}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    <script>
+        pie_chart({{ context1.keys|safe }}, {{ context1.review|safe }})
+        function pie_chart(list_keys, list_reviews){
+
+            console.log(list_keys)
+            let config = {
+                type: 'pie',
+                data: {
+                    labels: list_keys,
+                    datasets: [{
+                        label: "",
+                        backgroundColor: ['lightblue','crimson', 'green', 'blue'],
+                        data: list_reviews,
+                    }],
+                },
+                options: {
+                    maintainAspectRation: false,
+                    plugins: {
+                        datalabels: {
+                            color: 'white',
+                            labels: {
+                                title: {
+                                    font: {
+                                        weight:'bolder'
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                plugins: [ChartDataLabels],
+    
+            };
+            let canvas = document.querySelector("#pie-chart")
+            new Chart(canvas, config)
+        }
+
+        {% if context2 %}
+            bar_graph({{ context2.unq_value|safe }},{{ context2.pos_review|safe }},{{ context2.neg_review|safe }})
+        {% endif %}
+        function bar_graph(unq_value, pos_review, neg_review){
+
+            let DATA_COUNT = 4;
+            let NUMBER_CFG = {count: DATA_COUNT, min: -100, max: 100};
+
+            let data = {
+                labels: unq_value,
+                datasets: [
+                    {
+                        label: 'Positive Review',
+                        data: pos_review,
+                        backgroundColor: 'skyblue'
+                    },
+                    {
+                        label: 'Negative Review',
+                        data: neg_review,
+                        backgroundColor: 'crimson'
+                    }
+                ]
+            };
+
+            let config = {
+                type: 'bar',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRation: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        datalabels: {
+                            color: 'white',
+                            labels: {
+                                title: {
+                                    font: {
+                                        weight:'bolder'
+                                    }
+                                }
+                            }
+                        },
+                    }
+                },
+                plugins: [ChartDataLabels],
+            };
+
+            let canvas = document.querySelector("#bar_graph");
+            new Chart(canvas, config)
+        }
+    </script>
+</body>
+</html>

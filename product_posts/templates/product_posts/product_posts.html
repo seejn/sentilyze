@@ -1,0 +1,36 @@
+<div class="row justify-content-center my-4" style="padding: 0 20px">
+    {% if products.count > 0 %}
+        {% for product in products %}
+            <div class="col" style="padding: 0 20px;">
+                <div class="card flex-md-row mb-4 box-shadow g-md-20">
+                    <div class="card-body d-flex flex-column align-items-start">
+                        <strong class="d-inline-block mb-2 text-primary">{{ product.get_product_category }}</strong>
+                        <h3 class="mb-0">
+                            <span class="text-dart">{{ product.product_name }}</span>
+                        </h3>
+                        <div class="mb-1 text-muted">Rs {{ product.product_price }}/-</div>
+                        <p class="card-text mb-auto">{{ product.product_desc }}</p>
+                        <a style="font-size: 15px" href="{% url 'merchants:profile' product.account_id  %}">From: {{ product.get_company_name }}</a>
+                        {% if not request.session.company_pk == product.account_id %}
+                        <form action="{% url 'product_posts:post_review' product.id %}" method="POST" class="mt-2">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input type="hidden" value="{{ path }}" name="path" >
+                                <textarea required name="review" class="form-control" id="exampleFormControlTextarea1" rows="1" placeholder="Write your review here..." style="font-size: .85rem;"></textarea>
+                                <div class="mt-1 row justify-content-between align-items-center px-3">
+                                    <input type="submit" name="comment_submit" class=" btn btn-primary py-1 px-4" style="font-size: .65rem;" >
+                                </div>
+                            </div>
+                        </form>
+                        {% endif %}
+                        <i style="font-size: 9px;" class="text-secondary">Uploaded At: {{ product.uploaded_at }}</i>
+                    </div>
+                    {% load static %}
+                    <img class="card-img-right flex-auto d-none d-md-block"  src="{% static 'img/levitating-product-display-with-beauty-cream.jpg' %}" width="55%" height="300" alt="Card image cap">
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+            <h4 class="text-secondary">No Posts</h4>
+    {% endif %}
+</div>           
