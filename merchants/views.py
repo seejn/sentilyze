@@ -81,7 +81,7 @@ def logout(request):
 
 def home(request):
     context = {
-        "products": views.products(0),
+        "products": views.get_products(0),
         "path": request.path,
     }
     return render(request, 'merchants/home.html', context)
@@ -98,7 +98,7 @@ def profile(request, company_pk):
     context = {
         "company": company,
         "company_profile": company.profile_set.get(account_id=company_pk),
-        "products": views.products(company_pk),
+        "products": views.get_products(company_pk),
         "path": request.path,
     }
 
@@ -153,7 +153,7 @@ def change_profile_picture(request):
         savefile = FileSystemStorage(path)
         name = savefile.save(profile_pic.name, profile_pic)
 
-        acc.profile_set.update(company_logo=profile_pic.name)
+        acc.profile_set.update(company_logo=name)
         acc.updated_at = tz.now()
         acc.save()
         return redirect('/merchants/profile/' + str(company_pk) + '/')

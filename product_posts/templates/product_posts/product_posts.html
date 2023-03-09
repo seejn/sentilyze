@@ -1,16 +1,15 @@
-<div class="row justify-content-center my-4" style="padding: 0 20px">
+<div class="d-flex justify-content-center flex-wrap my-4" style="padding: 0 20px">
     {% if products.count > 0 %}
         {% for product in products %}
-            <div class="col" style="padding: 0 20px;">
+            <div class="col-lg-6 col-md-10" style="padding: 0 20px;">
                 <div class="card flex-md-row mb-4 box-shadow g-md-20">
                     <div class="card-body d-flex flex-column align-items-start">
                         <strong class="d-inline-block mb-2 text-primary">{{ product.get_product_category }}</strong>
-                        <h3 class="mb-0">
+                        <h5 class="mb-0">
                             <span class="text-dart">{{ product.product_name }}</span>
-                        </h3>
+                        </h5>
                         <div class="mb-1 text-muted">Rs {{ product.product_price }}/-</div>
                         <p class="card-text mb-auto">{{ product.product_desc }}</p>
-                        <a style="font-size: 15px" href="{% url 'merchants:profile' product.account_id  %}">From: {{ product.get_company_name }}</a>
                         {% if not request.session.company_pk == product.account_id %}
                         <form action="{% url 'product_posts:post_review' product.id %}" method="POST" class="mt-2">
                             {% csrf_token %}
@@ -23,10 +22,11 @@
                             </div>
                         </form>
                         {% endif %}
+                        <a style="font-size: 15px" href="{% url 'merchants:profile' product.account_id  %}">From: {{ product.get_company_name }}</a>
                         <i style="font-size: 9px;" class="text-secondary">Uploaded At: {{ product.uploaded_at }}</i>
                     </div>
                     {% load static %}
-                    <img class="card-img-right flex-auto d-none d-md-block"  src="{% static 'img/levitating-product-display-with-beauty-cream.jpg' %}" width="55%" height="300" alt="Card image cap">
+                    <img class="card-img-right flex-auto d-none d-md-block"  src="{% get_media_prefix %}/posted_product_picture/{{ product.account_id }}/{{ product.product_image }}" width="55%" height="300" alt="Card image cap">
                 </div>
             </div>
         {% endfor %}

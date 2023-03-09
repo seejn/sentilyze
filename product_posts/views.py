@@ -1,9 +1,31 @@
 from django.shortcuts import render, redirect
 from .models import *
 from upload_user_reviews.views import get_review_status
-# Create your views here.
+from django.core.files.storage import FileSystemStorage
 
-def products(company_id):
+# Create your views here.
+def post_product(request):
+    if request.method == "GET":
+        return redirect('/')
+    
+    product_image = request.FILES["product_image"]
+    product_name = request.POST.get("product_name")
+    product_price = request.POST.get("product_price")
+    product_desc = request.POST.get("product_desc")
+    product_category = request.POST.get("product_category")
+
+
+    path = 'media/posted_product_picture/{}/'.format(request.session['company_pk'])
+    savefile = FileSystemStorage(path)
+    image_name = savefile.save(product_image.name, product_image)
+
+    print(product_desc)
+
+    product = Product(account_id=request.session["company_pk"],product_image=image_name, product_name=product_name, product_price=product_price, product_desc=product_desc, category_id=product_category)
+    product.save()
+    return redirect('/')
+
+def get_products(company_id):
 
     company = Account.objects.all()
     if not company_id == 0:
