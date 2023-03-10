@@ -9,7 +9,14 @@
                 <div class="col col-lg-12">
                   <div class="card">
                     <div id="iframe-container" class="rounded-top text-white d-flex flex-row" style="height:400px;">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14128.333618843133!2d85.29252840781251!3d27.714710999999983!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb18fc9a83c0cd%3A0xc0495456663927d4!2sNational%20College%20of%20Computer%20Studies!5e0!3m2!1sen!2snp!4v1678250889250!5m2!1sen!2snp" style="border:0; width: 100%;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        {% if request.session.company_pk == company.id and company_profile.map_url == ''%}
+                          <form action="{% url 'merchants:edit_profile' %}" method="POST">
+                            {% csrf_token %}
+                            <button class="btn bg-light text-dark" style="opacity: 0.8;padding: 15px;position: absolute; left: 50%; transform: translateX(-50%)" type="submit"><strong >Click Here to Upload Your Location</strong></button>
+                          </form>
+                        {% endif %}
+
+                        <iframe id="map" src="" style="border:0; width: 100%;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                         <div class="hover-effect ms-4 d-flex flex-column" style="{% if not request.session.company_pk == company.id %} pointer-events: none; {% endif %}width: 150px;height:150px;">
                           {% load static %}  
                           <div class="upload_image d-flex justify-content-center align-items-center">Upload Image</div>
@@ -25,7 +32,9 @@
                         <div class="d-flex justify-content-between py-1">
                             <div>
                                 <h5>{{ company_profile.company_name }}</h5>
-                                <p class="text-secondary">{{ company_profile.company_address }}</p>
+                                <span class="text-secondary">{{ company_profile.company_address }}</span>
+                                <br>
+                                <span class="text-secondary">{{ company.company_email }}</span>
                             </div>
                             <div class="row">
                                 <div class="mx-2">
@@ -59,7 +68,7 @@
 
                       <div class="mb-5">
                         <p class="lead fw-normal mb-1">Posts</p>
-                        <div class="row justify-content-center align-items-center" style="background-color: #f8f9fa;padding: 20px 0;">
+                        <div class="" style="background-color: #f8f9fa;padding: 20px 0;">
 
                           {% include 'product_posts/product_posts.html' %}
 
@@ -74,5 +83,17 @@
             </div>
           </section>
           {% include 'mainapp/footer.html' %}
+          <script>
+            var map = document.querySelector("#map")
+            {% if company_profile.map_url == '' %}
+            
+              map.src = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7192260.604811718!2d79.63400445589386!3d28.333261853932086!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3995e8c77d2e68cf%3A0x34a29abcd0cc86de!2sNepal!5e0!3m2!1sen!2snp!4v1678454944988!5m2!1sen!2snp"
+
+            {% else %}
+            
+              map.src = "{{ company_profile.map_url }}"
+            
+            {% endif %}
+          </script>
     </body>
 </html>

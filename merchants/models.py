@@ -16,7 +16,7 @@ class Account(models.Model):
 class Profile(models.Model):
     account = models.ForeignKey(Account, on_delete=models.CASCADE)
     company_logo = models.ImageField(upload_to="profile_picture", default=False)
-    map_url = models.CharField(max_length=500, null=True)
+    map_url = models.TextField(max_length=500, null=True)
     company_name = models.CharField(max_length=50)
     company_address = models.CharField(max_length=100, null=True)
     company_reg_id = models.CharField(max_length=50, unique=True)
