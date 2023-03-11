@@ -1,0 +1,15 @@
+.change_product_picture{
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: black;
+    opacity: 0;
+    pointer-events: none;
+    transition: 200ms;
+}
+.product_picture_container:hover .change_product_picture{
+    opacity: 0.7;
+}
+.product_picture_container{
+    position: relative;
+}

@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+:root{
+  --color-primary: #7380ec;
+  --color-info-dark:#7d8da1;
+  --color-light:rgba(132,139,200,0.18);
+}
+aside{
+  display: block;
+  position: sticky;
+  top: 50px; 
+}
+aside .top{
+  display: flex;
+  align-items: center;
+  justify-content: space-between ;
+  margin-top:1.4rem;
+}
+aside .logo{
+  display: flex;
+  gap:0.8;
+}
+aside .close{
+  display:none;
+}
+aside .sidebar{
+
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: 3rem;
+}
+aside h3{
+  font-weight: 500;
+}
+aside .sidebar a{
+  text-decoration: none;
+  display:flex;
+  color:var(--color-info-dark);
+  margin-left:2rem;
+  gap:1rem;
+  align-items: center;
+  position: relative;
+  height: 3.7rem;
+  transition: all 300ms ease;
+}
+aside .sidebar a p,aside .sidebar a span{
+  font-size: 1em;
+  transition: all 300ms;
+}
+aside .sidebar a:hover{
+  color: var(--color-primary);
+  margin-left: 2.5rem;
+}
+aside .sidebar a.active{
+  margin-left: 2.5rem;
+  color: var(--color-primary);
+}

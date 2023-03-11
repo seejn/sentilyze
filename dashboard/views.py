@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect
 from merchants.models import Account
-from product_posts.models import Category
+from product_posts.models import Product, Category
 from django.contrib import messages
 
 # Create your views here.
@@ -11,12 +11,35 @@ def dashboard(request):
     if company_pk is None:
         return redirect('/merchants/login/')
     
-    company = Account.objects.get(pk=company_pk)
 
     context = {
-        "company": company,
-        "company_profile": company.profile_set.get(account_id=company.id),
-        "categories": Category.objects.all(),
+        "document_title": "dashboard",
     }
-    return render(request, "dashboard/dashboard.html", context)
+    return context
 
+def see_my_posts(request):
+    context = dashboard(request)
+    company_pk = request.session["company_pk"]
+    products = Product.objects.filter(account_id=company_pk)
+
+    context.update({
+        "products": products,
+        "dashboard_page_no": 0,
+    })
+    return render(request, 'dashboard/see_my_posts.html', context)
+
+def analytics(request):
+    context = dashboard(request)
+    context.update({
+        "dashboard_page_no": 1
+    })
+    return render(request, 'dashboard/analytics.html', context)
+
+def publish(request):
+    context = dashboard(request)
+    categories = Category.objects.all()
+    context.update({
+        "categories": categories,
+        "dashboard_page_no": 2,
+    })
+    return render(request, 'dashboard/publish_product.html', context)

@@ -1,0 +1,21 @@
+<aside>
+    <div class="top">
+        <div class="close" id="close-btn">
+            <span class="material-icons-sharp"> close</span>
+        </div>
+    </div>
+    <div class="sidebar">
+        <a href="{% url 'dashboard:see_my_posts' %}" class=" {% if dashboard_page_no == 0  %}active{% endif %}">
+            <span class="material-icons-sharp">assessment</span>
+            <p>See My Posts</p>
+        </a>
+        <a href="{% url 'dashboard:analytics' %}" class=" {% if dashboard_page_no == 1  %}active{% endif %}">
+            <span class="material-icons-sharp">analytics</span>
+            <p>Analytics</p>
+        </a>
+        <a href="{% url 'dashboard:publish_product' %}" class=" {% if dashboard_page_no == 2  %}active{% endif %}">
+            <span class="material-icons-sharp">publish</span>
+            <p>Publish-Product</p>
+        </a>
+    </div>
+</aside>
