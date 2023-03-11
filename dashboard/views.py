@@ -1,5 +1,4 @@
 from django.shortcuts import render,redirect
-from django.contrib import KeyError
 from merchants.models import Account
 from product_posts.models import Product, Category
 from django.contrib import messages
