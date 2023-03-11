@@ -1,4 +1,5 @@
 from django.shortcuts import render,redirect
+from django.contrib import KeyError
 from merchants.models import Account
 from product_posts.models import Product, Category
 from django.contrib import messages
@@ -6,11 +7,10 @@ from django.contrib import messages
 # Create your views here.
 
 def dashboard(request):
-    company_pk = request.session.get('company_pk')
-
-    if company_pk is None:
+    try:
+        company_pk = request.session.get('company_pk')
+    except KeyError:
         return redirect('/merchants/login/')
-    
 
     context = {
         "document_title": "dashboard",
