@@ -2,7 +2,7 @@
     {% if products.count > 0 %}
         {% for product in products %}
             <div class="mb-2 col-lg-6 col-md-10" style="padding: 0 20px;">
-                <div class="card flex-md-row  box-shadow mb-2 g-md-20">
+                <div class="card flex-md-row  box-shadow mb-2 g-md-20 p-0">
                     <div class="card-body d-flex flex-column align-items-start">
                         <strong class="d-inline-block mb-2 text-primary">{{ product.get_product_category.category }}</strong>
                         <h5 class="mb-0">
