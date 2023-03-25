@@ -102,14 +102,13 @@ def analyze_user_csv(dataset):
 
 def get_review_status(review):
 
+    stopwords = nltk.corpus.stopwords.words('english')
+
     from nltk.corpus import stopwords
     from nltk.stem.porter import PorterStemmer
     ps = PorterStemmer()
 
-    try:
-        all_stopwords = stopwords.words('english')        
-    except LookupError:
-        all_stopwords = nltk.download('stopwords')
+    all_stopwords = stopwords.words('english')        
     
     all_stopwords.remove('not')
 
