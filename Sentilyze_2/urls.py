@@ -23,6 +23,7 @@ from django.contrib.staticfiles.urls import static
 urlpatterns = [
     path('', views.mainapp, name='landing_page'),
     path('admin/', admin.site.urls),
+    path('mainapp/', include("mainapp.urls")),
     path('merchants/', include("merchants.urls")),
     path('dashboard/', include('dashboard.urls')),
     path('upload_user_reviews/', include('upload_user_reviews.urls')),

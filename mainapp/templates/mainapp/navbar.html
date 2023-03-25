@@ -19,6 +19,9 @@
             <li class="nav-item active">
               <a class="nav-link" href="{% url 'merchants:home' %}">Home</a>
             </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'mainapp:aboutus' %}">AboutUs</a>
+            </li>
             {% if request.session.company_pk %}
             <li class="nav-item active">
               <a class="nav-link" href="{% url 'dashboard:dashboard' %}">Dashboard</a>

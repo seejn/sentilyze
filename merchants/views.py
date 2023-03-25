@@ -35,7 +35,7 @@ def create_account(request):
             return redirect('/merchants/login/')
 
     context = {
-
+        "document_title":"Sign Up",
     }
     return render(request, 'merchants/signup_form.html', context)
 
@@ -68,7 +68,7 @@ def login(request):
 
 
     context = {
-
+        "document_title":"Log In"
     }
     return render(request, 'merchants/login_form.html', context)
 
@@ -81,6 +81,7 @@ def logout(request):
 
 def home(request):
     context = {
+        "document_title":"Home",
         "products": views.get_products(0),
         "path": request.path,
     }
@@ -96,6 +97,7 @@ def profile(request, company_pk):
     print(company.id)
 
     context = {
+        "document_title":company.profile_set.get(account_id=company.id).company_name,
         "company": company,
         "company_profile": company.profile_set.get(account_id=company_pk),
         "products": views.get_products(company_pk),

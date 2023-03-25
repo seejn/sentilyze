@@ -90,6 +90,7 @@ def edit_product(request, product_id):
         return redirect('/dashboard/see_my_posts/')
 
     context = {
+        "document_title":"Edit Product",
         "product": product,
         "categories": categories,
     }
@@ -124,5 +125,8 @@ def change_product_image(request, product_id):
         
         return redirect('/dashboard/see_my_posts/')
 
-
-    return render(request, 'product_posts/change_product_image.html', {"product": product})
+    context = {
+        "document_title":"Change Product Image",
+        "product": product,
+    }
+    return render(request, 'product_posts/change_product_image.html', context)

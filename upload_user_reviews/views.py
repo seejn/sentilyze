@@ -26,7 +26,11 @@ def csv_index(request):
     if(request.method == "POST"):
         upload_csv(request)
 
-    return render(request, 'upload_user_reviews/upload_csv.html')
+    context = {
+        "document_title":"Upload CSV",
+    }
+
+    return render(request, 'upload_user_reviews/upload_csv.html', context)
 
 def upload_csv(request):
     uploaded_file = request.FILES["csv_document"]
@@ -159,6 +163,7 @@ def feedback_result(request):
         context2 = label
 
     context = {
+        "document_title":"Result",
         "goto": goto,
         "additional_field": additional_field,
         "context1": context1,

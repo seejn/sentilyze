@@ -14,7 +14,7 @@ def dashboard(request):
         return redirect('/merchants/login/')
 
     context = {
-        "document_title": "dashboard",
+        "document_title": "Dashboard",
     }
     return context
 
@@ -87,13 +87,13 @@ def analytics(request):
         "category_negative_count": category_negative_count,
     }
 
-    context = {
+    context.update({
         "products": products,
         "reviews": reviews,
         "dashboard_page_no": 1,
         "category": category,
         "category_collection": category_collection,
-    }
+    })
 
     return render(request, 'dashboard/analytics.html', context)
 

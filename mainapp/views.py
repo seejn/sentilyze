@@ -8,8 +8,15 @@ def mainapp(request):
             return redirect('/dashboard/')
     except KeyError:
         context = {
+            "document_title":"Home",
             "products": views.get_products(0),
             "path": request.path,
         }
         return render(request, 'mainapp/landingpage.html', context)
+
+def aboutus(request):
+    context = {
+        "document_title":"About Us",
+    }
+    return render(request, 'mainapp/aboutus.html', context)
         
