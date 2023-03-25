@@ -106,7 +106,11 @@ def get_review_status(review):
     from nltk.stem.porter import PorterStemmer
     ps = PorterStemmer()
 
-    all_stopwords = stopwords.words('english')
+    try:
+        all_stopwords = stopwords.words('english')        
+    except LookupError:
+        all_stopwords = nltk.download('stopwords')
+    
     all_stopwords.remove('not')
 
     corpus = []
