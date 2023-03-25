@@ -22,7 +22,19 @@ class Product(models.Model):
 
     def get_product_category(self):
         category = Category.objects.get(pk=self.category_id)
-        return category.category
+        return category
+
+    def get_review_status(self):
+        reviews = Product_Review.objects.filter(product_id=self.id)
+        positive_count = Product_Review.objects.filter(product_id=self.id, status="Positive").count()
+        negative_count = Product_Review.objects.filter(product_id=self.id, status="Negative").count()
+        
+        reviews = {
+            "reviews": reviews,
+            "positive_count":positive_count,
+            "negative_count":negative_count,
+        }
+        return reviews
 
 class Category(models.Model):
     category = models.CharField(max_length=20)
@@ -37,3 +49,5 @@ class Product_Review(models.Model):
 
     def __str__(self):
         return self.status
+
+        

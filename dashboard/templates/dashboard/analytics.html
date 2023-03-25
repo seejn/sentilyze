@@ -1,4 +1,141 @@
 {% extends 'dashboard/dashboard.html' %}
 {% block content %}
-    <div>Analytics</div>
+<style>
+    .chart-container{
+        max-height: 70vh;
+        justify-content: center;
+
+    }
+    .bar-graph-container{
+        height: 60vh;
+    }
+    .table-container{
+        max-height: 46vh;
+        overflow: auto;
+    }
+    .table-container::-webkit-scrollbar {
+        width: 5px;
+    }
+        
+        /* Track */
+    .table-container::-webkit-scrollbar-track {
+        box-shadow: inset 0 0 5px grey; 
+        border-radius: 10px;
+    }
+        
+    /* Handle */
+    .table-container::-webkit-scrollbar-thumb {
+        background: red; 
+        border-radius: 10px;
+    }
+        
+    /* Handle on hover */
+    .table-container::-webkit-scrollbar-thumb:hover {
+        background: #b30000; 
+    }
+</style>
+    <div class="mb-5">
+        {% for product in products %}
+        {% load static %}
+        <div class="row mb-5" style="padding: 0 20px;">
+            <div class="card flex-md-row  box-shadow mb-2 g-md-20 col-lg-6 col-md-12">
+                <div class="card-body d-flex justify-content-between flex-column align-items-start">
+                    <div>
+                        <strong class="d-inline-block mb-2 text-primary">{{ product.get_product_category }}</strong>
+                        <h5 class="mb-0">
+                            <span class="text-dart">{{ product.product_name }}</span>
+                        </h5>
+                    </div>
+                    <div>
+                        <span class="" style="font-size: 12px; color: green;">Positive Review Count: {{ product.get_review_status.positive_count }}</span>
+                        <br>
+                        <span class="" style="font-size: 12px; color: crimson;">Negative Review Count: {{ product.get_review_status.negative_count }}</span>
+                        <br>
+                        <i style="font-size: 9px;" class="text-secondary">Uploaded At: {{ product.uploaded_at }}</i>
+                    </div>
+                </div>
+                <div class="product_picture_container" style="width: 50%;">
+                    <img class="card-img-right flex-auto d-none d-md-block"  src="{% get_media_prefix %}posted_product_picture/{{ product.account_id }}/{{ product.product_image }}" width="100%" height="300" alt="Card image cap">
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-6 table-container">
+                <table width="100%" class="table table-striped">
+                    <tr>
+                        <th>Reviews</th>
+                        <th>Status</th>
+                    </tr>
+                    {% for review in product.get_review_status.reviews %}
+                    <tr>
+                        <td>{{ review.review }}</td>
+                        <td>{{ review.status }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+
+
+
+    <div class="mt-5">
+        <h3 class="text-center my-3">Category Based Review</h3>
+        <hr/>
+        <div class="d-flex justify-content-center bar-graph-container">
+            <canvas id="bar_graph"></canvas>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+    <script>
+
+        bar_graph({{category|safe}},{{category_collection.category_positive_count}},{{category_collection.category_negative_count}})
+        function bar_graph(unq_value, pos_review, neg_review){
+
+            let data = {
+                labels: unq_value,
+                datasets: [
+                    {
+                        label: 'Positive',
+                        data: pos_review,
+                        backgroundColor: 'skyblue'
+                    },
+                    {
+                        label: 'Negative',
+                        data: neg_review,
+                        backgroundColor: 'crimson'
+                    }
+                ]
+            };
+
+            let config = {
+                type: 'bar',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRation: false,
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        datalabels: {
+                            color: 'white',
+                            labels: {
+                                title: {
+                                    font: {
+                                        weight:'bolder'
+                                    }
+                                }
+                            }
+                        },
+                    }
+                },
+                plugins: [ChartDataLabels],
+            };
+
+            let canvas = document.querySelector("#bar_graph");
+            new Chart(canvas, config)
+        }
+    </script>
 {% endblock %}
