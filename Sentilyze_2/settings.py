@@ -25,7 +25,9 @@ SECRET_KEY = 'django-insecure-cm2lm@pb0dmmv&zpg8#b29!u4pcb#f1=4+9%!zwu+$o2#rnhqz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+'192.168.100.220'
+]
 
 
 # Application definition
@@ -81,10 +83,10 @@ WSGI_APPLICATION = 'Sentilyze_2.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sentilyze',
-        'USER': 'root',
-        'PASSWORD': 'root',
-        'HOST': 'localhost',
+        'NAME': 'bncvtqcu1euh3z7jxvsu',
+        'USER': 'urxerlq0owil7nl5',
+        'PASSWORD': 'nV619J2ZcSdfALnLtD7N',
+        'HOST': 'bncvtqcu1euh3z7jxvsu-mysql.services.clever-cloud.com',
         'PORT': '3306',
     }
 }
