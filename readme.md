@@ -1,3 +1,9 @@
+Login Credentials:
+
+email: fashion123@gmail.com
+password: fashionhub
+
+
 Installation Requirements:
 
 pip install django
@@ -24,5 +30,8 @@ insights into customer sentiment by analyzing existing customer feedback in a us
 interface.
 
 References:
-
 https://www.youtube.com/watch?v=zwR6M5zpnWs
+
+Live Demo:
+https://www.youtube.com/watch?v=yRw23JPglRc
+
